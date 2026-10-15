@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nosce · 省吾"
+  short_description: "通过持续提问与可修正的长期观察，在日常对话中逐渐认识自己"
+  default_prompt: "使用 $nosce 开始今天的日省，从一个值得思考的问题聊起。"

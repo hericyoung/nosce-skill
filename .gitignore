@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+*.pyc
+# Personal reflection records must stay out of the distributable project.
+.nosce/
+private/
