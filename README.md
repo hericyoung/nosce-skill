@@ -17,28 +17,13 @@
 完成后直接开始今天的日省，我只有两分钟。
 ```
 
-用户无需手动下载和逐个上传文件。有 Skill 安装能力的环境会安装到其支持的位置；只有网页读取能力的对话环境会加载文件作为当前对话的指引。永久安装是否可行，取决于宿主提供的工具。[官方 Skill 说明](https://learn.chatgpt.com/docs/build-skills)
+AI 能访问仓库时，无需手动下载和逐个上传文件。支持安装时由 AI 完成安装；仅支持网页读取时，在当前对话中加载使用。[官方 Skill 说明](https://learn.chatgpt.com/docs/build-skills)
 
 如果 AI 无法访问 GitHub，可以补发 [SKILL.md 原文链接](https://raw.githubusercontent.com/hericyoung/nosce-skill/main/SKILL.md)。若原文也无法访问，则需要改用可联网的环境，或上传仓库中的文件。
 
 ### 给 AI 的安装说明
 
-用户要求安装这个仓库时，使用以下信息完成操作：
-
-- 仓库：`https://github.com/hericyoung/nosce-skill`
-- 默认分支：`main`
-- Skill 路径：仓库根目录 `.`
-- Skill 名称及目标目录名：`nosce`
-- 运行所需文件：`SKILL.md`、`references/` 和 `agents/openai.yaml`
-- 无需安装依赖、构建项目或运行服务。
-
-**环境支持 Skill 安装时：**
-
-优先使用宿主自带的 Skill 安装器，指定仓库根目录为来源、`nosce` 为安装名称。对于 Codex 的 `skill-installer`，参数为 `--repo hericyoung/nosce-skill --path . --name nosce`，使用实际可用的安装器脚本执行。其他宿主按其技能目录约定安装，保持相对路径不变。如果存在同名 Skill，先比较内容，不直接覆盖本地修改。
-
-安装后检查 `SKILL.md` 与引用文件是否完整，报告实际安装位置和是否需要刷新或重新开启对话。只有成功写入宿主支持的技能目录后才报告“已安装”。
-
-**环境只能读取网页时：**
+先确认当前对话是否提供 Skill 安装能力：支持时使用内置安装功能安装 Nosce，并检查技能文件是否完整；只支持网页读取时，加载下列文件后直接开始聊天。分别如实告知“已安装”或“已在当前对话加载”。
 
 读取以下文件，并将其用作当前对话的指引。网页页面无法取到完整内容时，使用对应的原文地址：
 
@@ -49,7 +34,7 @@
 | 认知档案 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/references/memory.md |
 | 定时提问 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/references/scheduling.md |
 
-先完整读取入口，其他文件在对应功能需要时读取。远程读取时，相对引用按以上地址解析。报告“已在当前对话加载”，并说明新对话可能需要重新加载；不要将网页阅读描述为永久安装。读取失败时明确指出缺少哪个文件。
+先完整读取入口，其他文件在对应功能需要时读取。远程读取时，相对引用按以上地址解析。仅加载使用时，说明新对话可能需要重新加载；不要将网页阅读描述为永久安装。读取失败时明确指出缺少哪个文件。
 
 无论使用哪种方式，安装或加载本身都不创建提醒或个人档案。用户另行提出记录、回访或定时请求时，再按技能指引处理。
 
@@ -63,7 +48,7 @@
 - “今天不记录，只聊聊。”
 - “今天不想回答。”
 
-在 ChatGPT 的技能选择器中可用时，可以输入 `@` 选择 Nosce；在 Codex 中可以用 `$nosce` 明确调用。
+在 ChatGPT 的技能选择器中可用时，也可以输入 `@` 选择 Nosce。
 
 如需定时提问，可以说“每天晚上 21:00 提醒我省吾，时区 Asia/Shanghai”。只有宿主实际创建成功的计划任务才会定时执行。[官方计划任务说明](https://learn.chatgpt.com/docs/automations)
 
