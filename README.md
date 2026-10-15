@@ -4,6 +4,71 @@
 
 自省是手段，自我认识才是目的。Nosce 通过轻量提问、自适应追问和可修正的长期观察，帮助你逐渐认识自己；不把每一次对话都变成自我改进任务。
 
+## 使用
+
+### 把链接发给 AI，让它自行安装
+
+复制下面这段话，发送给 ChatGPT App 或支持 Skill 的 AI 助手：
+
+```text
+请帮我安装并使用 Nosce（省吾）：https://github.com/hericyoung/nosce-skill
+
+请先读取仓库 README，按其中的「给 AI 的安装说明」完成安装；如果当前环境无法安装，就读取技能文件并在本次对话中使用，如实说明状态。
+完成后直接开始今天的日省，我只有两分钟。
+```
+
+用户无需手动下载和逐个上传文件。有 Skill 安装能力的环境会安装到其支持的位置；只有网页读取能力的对话环境会加载文件作为当前对话的指引。永久安装是否可行，取决于宿主提供的工具。[官方 Skill 说明](https://learn.chatgpt.com/docs/build-skills)
+
+如果 AI 无法访问 GitHub，可以补发 [SKILL.md 原文链接](https://raw.githubusercontent.com/hericyoung/nosce-skill/main/SKILL.md)。若原文也无法访问，则需要改用可联网的环境，或上传仓库中的文件。
+
+### 给 AI 的安装说明
+
+用户要求安装这个仓库时，使用以下信息完成操作：
+
+- 仓库：`https://github.com/hericyoung/nosce-skill`
+- 默认分支：`main`
+- Skill 路径：仓库根目录 `.`
+- Skill 名称及目标目录名：`nosce`
+- 运行所需文件：`SKILL.md`、`references/` 和 `agents/openai.yaml`
+- 无需安装依赖、构建项目或运行服务。
+
+**环境支持 Skill 安装时：**
+
+优先使用宿主自带的 Skill 安装器，指定仓库根目录为来源、`nosce` 为安装名称。对于 Codex 的 `skill-installer`，参数为 `--repo hericyoung/nosce-skill --path . --name nosce`，使用实际可用的安装器脚本执行。其他宿主按其技能目录约定安装，保持相对路径不变。如果存在同名 Skill，先比较内容，不直接覆盖本地修改。
+
+安装后检查 `SKILL.md` 与引用文件是否完整，报告实际安装位置和是否需要刷新或重新开启对话。只有成功写入宿主支持的技能目录后才报告“已安装”。
+
+**环境只能读取网页时：**
+
+读取以下文件，并将其用作当前对话的指引。网页页面无法取到完整内容时，使用对应的原文地址：
+
+| 文件 | 原文地址 |
+| --- | --- |
+| 入口 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/SKILL.md |
+| 选题 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/references/questions.md |
+| 认知档案 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/references/memory.md |
+| 定时提问 | https://raw.githubusercontent.com/hericyoung/nosce-skill/main/references/scheduling.md |
+
+先完整读取入口，其他文件在对应功能需要时读取。远程读取时，相对引用按以上地址解析。报告“已在当前对话加载”，并说明新对话可能需要重新加载；不要将网页阅读描述为永久安装。读取失败时明确指出缺少哪个文件。
+
+无论使用哪种方式，安装或加载本身都不创建提醒或个人档案。用户另行提出记录、回访或定时请求时，再按技能指引处理。
+
+### 日常使用
+
+安装或加载后，直接自然表达即可：
+
+- “开始今天的日省，只聊两分钟。”
+- “帮我回顾本周，我对什么事情的看法发生了变化？”
+- “我想重新看看之前关于自己的判断。”
+- “今天不记录，只聊聊。”
+- “今天不想回答。”
+
+在 ChatGPT 的技能选择器中可用时，可以输入 `@` 选择 Nosce；在 Codex 中可以用 `$nosce` 明确调用。
+
+如需定时提问，可以说“每天晚上 21:00 提醒我省吾，时区 Asia/Shanghai”。只有宿主实际创建成功的计划任务才会定时执行。[官方计划任务说明](https://learn.chatgpt.com/docs/automations)
+
+长期认知观察以实际可读的历史为依据。可使用专属 ChatGPT 项目保留技能文件和经过你检查的摘要；项目文件与指令可供其中的对话共享。[官方项目说明](https://learn.chatgpt.com/docs/projects?surface=app)
+
 ## 项目结构
 
 ```text
@@ -20,74 +85,6 @@ Nosce/
 ```
 
 这是一个以中文对话为默认体验、无运行时依赖的 Skill 项目。日省、周省、月省都是对话模式，时长仅作参考。持久化需要可读写的存储，定时发送需要宿主提供调度能力。
-
-## 使用
-
-### 在 ChatGPT App 的对话模式中使用
-
-可以将 Nosce 的文件作为对话指引来使用。首次体验只需上传文件并发送开场指令；长期使用建议建立一个专属项目，方便复用文件与指令。
-
-**首次开始**
-
-1. 从本仓库下载 [SKILL.md](SKILL.md) 和 `references/` 下的 [questions.md](references/questions.md)、[memory.md](references/memory.md)、[scheduling.md](references/scheduling.md)。
-2. 在 ChatGPT App 中新建对话，选择 **Chat（对话）** 模式，将这四个 Markdown 文件作为附件上传。不需要上传 `agents/`、`evals/` 或 README。
-3. 发送下面这段话：
-
-```text
-请阅读我上传的 SKILL.md，将它作为这段对话中 Nosce（省吾）的对话指引。
-questions.md、memory.md、scheduling.md 分别是选题、认知档案和定时提问的参考文件，请在需要时使用；若文件不可读，请直接告诉我。
-用中文陪我进行自我认识对话。先开始今天的日省，我只有两分钟，请从一个具体、开放的问题开始。
-目前只在对话中交流，不另行保存认知档案或创建提醒。
-```
-
-然后直接回答提出的问题即可。后续回到同一对话，可以说“开始今天的日省”“今天换个话题”或“今天到这里”。上传文件提供的是对话上下文；仅发送仓库地址不等于已经加载了全部技能文件。
-
-**长期使用：建立专属项目**
-
-在 ChatGPT 中创建名为“Nosce · 省吾”的项目，将上述四个文件加入项目来源，并在项目指令中写入：
-
-```text
-本项目用于 Nosce（省吾）自我认识对话。
-开始相关对话时，请先阅读项目来源中的 SKILL.md，按需参考 questions.md、memory.md 和 scheduling.md。
-只依据实际可读取的记录提出观察；区分事实与假设，允许我修正或撤回判断。
-```
-
-从这个项目内开始 Chat 对话，即可复用项目文件和指令。项目支持共享这些上下文；跨次观察仍以助手实际能读取的记录为准。必要时请它整理一份简短、可修正的摘要，由你检查后手动保存到项目来源，供下次回访使用。项目本身不会自动更新本地仓库中的文件。[官方项目说明](https://learn.chatgpt.com/docs/projects?surface=app)
-
-如果 Nosce 已安装且出现在 App 的技能选择器中，也可以在输入框键入 `@`，选择 **Nosce · 省吾** 后发送请求。当前仓库提供 Skill 源文件；上传附件的流程无需先完成原生 Skill 安装。[官方 Skill 说明](https://learn.chatgpt.com/docs/build-skills)
-
-**日常对话与定时提问**
-
-- “开始今天的日省，只聊两分钟。”
-- “帮我回顾本周，我对什么事情的看法发生了变化？”
-- “我想重新看看之前关于自己的判断。”
-- “今天不记录，只聊聊。”
-- “今天不想回答。”
-
-如需定时提问，在支持计划任务的环境中明确提出时间、频率和时区，例如：
-
-```text
-请在当前对话中创建每日省吾任务：每天晚上 21:00，时区 Asia/Shanghai。
-每次按 Nosce 的原则发出一个简短、开放的问题，等待我回答后再继续。
-如果定时执行时无法读取这些附件，请告诉我，并将必要的提问原则写入任务提示。
-请告知任务是否实际创建成功。
-```
-
-以实际创建成功的任务为准；聊天指令本身不会让助手自动定时发消息。可用性取决于账号、客户端和宿主能力，任务创建后请检查其提示、时间及通知设置。[官方计划任务说明](https://learn.chatgpt.com/docs/automations)
-
-### 在 Codex 中使用
-
-项目根目录就是 Skill 目录。安装时将整个项目目录复制到支持的技能目录，并将目录命名为 `nosce`。对于当前 Codex 环境，安装后的入口应为 `~/.codex/skills/nosce/SKILL.md`；若已有同名技能，请先比较再合并。此项目尚未自动安装到全局目录。
-
-也可以在当前项目中直接让助手读取根目录的 [SKILL.md](SKILL.md)，开始试用。
-
-- `$nosce 开始今天的日省，只聊两分钟。`
-- `$nosce 帮我回顾本周，有哪些想法发生了变化？`
-- `$nosce 我想重新看看之前关于自己的判断。`
-- `$nosce 今天不记录，只聊聊。`
-- `$nosce 帮我设置每周日晚上九点的周省提醒。`
-
-最后一种请求需要实际可用的调度工具，并明确时区；仅加载 Skill 不会创建提醒。长期档案在用户选择存储位置后启用；未启用时仍可正常对话。不要将个人记录提交到这个可分享的技能项目中。
 
 ## 初版范围
 
